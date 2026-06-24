@@ -22,14 +22,3 @@ Every PR must have: a description explaining what changed and why, at least
 one reviewer, and passing CI checks before merge. The PR description is
 permanent record — write it for the engineer who inherits this codebase
 in 18 months.
-
-## Commit Message Convention
-
-Format: `type(scope): short description`
-
-Types: feat, fix, docs, chore, refactor, test
-Example: `feat(payments): add idempotency key validation`
-
-A good commit message answers: what changed, and why — not how (the diff
-shows how). The message is read during incident investigation and code
-archaeology, not during development.
