@@ -93,14 +93,28 @@ to Europe often traverses undersea cables with higher contention during peak hou
 
 ### Latency measurement
 
+Measured from Nairobi (development machine, Safaricom network):
+
 ```bash
-# Measuring from the KijaniKiosk development machine
-ping -c 5 google.com
-traceroute google.com
+ping -c 5 8.8.8.8
+# rtt min/avg/max/mdev = 18.678/20.465/22.141/1.418 ms
 ```
 
-Observed: ~8ms to nearby Google infrastructure (Nairobi PoP).
-Compared to a US endpoint: ~220ms average round-trip.
+Traceroute analysis:
+- Hop 1: Local router (192.168.8.1) — 3ms
+- Hop 5: 196.201.216.x — KIXP (Kenya Internet Exchange Point, Nairobi) — 20ms
+- Hop 7-9: Google peering and DNS (8.8.8.8) — 21ms
+
+**Key finding:** Traffic reaches Google's nearest point of presence in 9 hops
+without leaving East Africa. Round-trip to 8.8.8.8 averages **20.5ms**. This
+confirms that Google's `africa-south1` region (which has a Nairobi PoP) would
+serve KijaniKiosk users at very low latency compared to routing to Europe
+(estimated 150-180ms) or the US (220-280ms).
+
+The KIXP hop at 196.201.216.x is significant — it confirms traffic stays within
+African internet exchange infrastructure rather than transiting to European
+backbone cables, which is the expected behavior when the nearest serving
+infrastructure is local.
 
 ### Principle
 **Deploy primary serving infrastructure in the region geographically closest to
